@@ -392,7 +392,7 @@ Cabecera.prototype.construir = function(){
 	var contenedor = obtenerContenedor();
 	var elemento = document.createElement('div');
 	elemento.setAttribute('cabecera','');
-	elemento.innerHTML = "<button type='button' menuBtn id='menuBtn'><i class='material-icons md-36 white'>menu</i></button><div titulo>Rhino</div>";
+	elemento.innerHTML = "<button type='button' menuBtn id='menuBtn'><i class='material-icons md-36 white'>menu</i></button><div titulo>SOCA PORTUGUESA</div>";
 	contenedor.insertBefore(elemento,contenedor.firstChild);
 	this.funcionamientoBoton();
 	this.estado='enUso';
@@ -412,6 +412,10 @@ Cabecera.prototype.funcionamientoBoton = function() {
 			menu.setAttribute('estado','visible');
 		}
 	};
+};
+Cabecera.prototype.agregarHTML = function(html){
+	this.nodo.innerHTML+=html;
+	this.funcionamientoBoton();
 };
 /*----------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------Objeto Menu ----------------------------------------*/
@@ -572,12 +576,12 @@ var Menu = function(){
 					}
 				}
 			},30);
-			html+='<article off onclick="sesion.cerrarSesion()"><i></i></article>';
+			html+='<article  onclick="location.href=\'../../global/vistas/vis_Landing.html\'"><i class="material-icons md-48 white">home</i></article>';
+			html+='<article off ><i onclick="sesion.cerrarSesion()"></i></article>';
 
 		}
-		html+='<article contact><i></i></article>';
-		html+='<article seguridad  onclick="location.href=\'vis_Cuenta.html\'"><i></i></article>';
-		html+='<article books><i></i></article>';
+		html+='<a href=\'../../seguridad/vistas/vis_Cuenta.html\'><article seguridad><i></i></article></a>';
+
 		pie.innerHTML=html;
 	};
 	this.getEstado = function(){
@@ -778,14 +782,21 @@ var Botonera = function(atributos){
 		this.inicializarBotones();
 		//boton nuevo
 		if(UI.elementos.maestro!=='noPosee'){
-			this.buscarBoton('nuevo').nodo.onclick=function(){
-				console.log('presiono Nuevo');
-				var data = {
-					tipo:'nuevo'
+
+			if(UI.elementos.maestro.buscarBoton('nuevo')){
+				this.buscarBoton('nuevo').nodo.onclick = function(){
+					UI.elementos.maestro.retornarBoton('nuevo').click();
 				};
-				var maestro = UI.elementos.maestro;
-				maestro.agregarFormulario(data);
-			};
+			}else{
+				this.buscarBoton('nuevo').nodo.onclick=function(){
+					console.log('presiono Nuevo');
+					var data = {
+						tipo:'nuevo'
+					};
+					var maestro = UI.elementos.maestro;
+					maestro.agregarFormulario(data);
+				};
+			}
 			//boton buscar
 			if(this.buscarBoton('buscar')){
 				this.buscarBoton('buscar').nodo.onclick=function(){
@@ -1331,13 +1342,7 @@ var modalWindow = function(){
 					porConstruir = contenido;
 				}
 				if(porConstruir.formulario){
-					this.formulario = new Formulario({
-						contenedor: this.nodo,
-						plano: porConstruir.formulario,
-						tipo: porConstruir.tipo,
-						registroAct: porConstruir.registro
-					});
-					porConstruir.alto = porConstruir.formulario.altura;
+					this.agregarFormulario(porConstruir);
 				}
 				if(porConstruir.html){
 					this.nodo.innerHTML = porConstruir.html;
@@ -1350,7 +1355,15 @@ var modalWindow = function(){
 					UI.manejoDeClases(this);
 				}
 			};
-
+			this.agregarFormulario = function(porConstruir){
+				this.formulario = new Formulario({
+					contenedor: this.nodo,
+					plano: porConstruir.formulario,
+					tipo: porConstruir.tipo,
+					registroAct: porConstruir.registro
+				});
+				this.nodo.style.height = porConstruir.formulario.altura + 'px';
+			};
 			this.agregarCampos = function(campos){
 				for(var x = 0;x < campos.length; x++){
 					this.agregarCampo(campos[x]);
@@ -1525,7 +1538,10 @@ var modalWindow = function(){
 			}
 
 			//cambio el cuerpo
-			this.partes.cuerpo.nodo.innerHTML='<div textomodal>'+mensaje.cuerpo+'</div>';
+			if(this.partes.cuerpo){
+					this.partes.cuerpo.nodo.innerHTML='<div textomodal>'+mensaje.cuerpo+'</div>';
+			}
+
 
 			//cambio pie
 			if(this.partes.pie){
@@ -1832,7 +1848,9 @@ var Formulario = function(atributos){
 	this.captarValores = function(){
 		var registro = {};
 		for (var i = 0; i < this.campos.length; i++) {
-			registro[this.campos[i].captarNombre()] = this.campos[i].captarValor();
+			if(this.campos[i].captarValor()!== null){
+				registro[this.campos[i].captarNombre()] = this.campos[i].captarValor();
+			}
 		}
 		return registro;
 	};
@@ -1947,7 +1965,10 @@ var Lista = function(data){
 			this.clases = ['dos','tres','cuatro','cinco','seis','siete','ocho','adaptable'];
 			this.construirNodo();
 		};
-
+		Celda.prototype.captarValor= function(){
+			var valor = this.nodo.querySelector('span[valor]').textContent.trim();
+			return valor;
+		};
 		Celda.prototype.construirNodo = function(){
 			var nodo = document.createElement('div');
 			if(this.atributos.tipo){
@@ -1956,7 +1977,7 @@ var Lista = function(data){
 				nodo.setAttribute('celda',this.atributos.nombre);
 			}
 			this.nodo = nodo;
- 			this.nodo.innerHTML= '<span>'+this.atributos.valor+'</span>';
+ 			this.nodo.innerHTML= '<span valor>'+this.atributos.valor+'</span>';
 			var indice = this.atributos.columnas - 2;
 			if(indice > 6){
 				indice = 7;
@@ -1980,19 +2001,33 @@ var Lista = function(data){
 			var yo = this;
 			//campo de texto
 			var span = this.nodo.querySelector('span');
-			var input = document.createElement('input');
-			input.type='text';
-			input.value = span.textContent;
-			input.onblur = function(){
-				span.textContent = this.value;
-				this.parentNode.classList.toggle('visible');
-			};
+
 			this.capaEdit.onclick = function(){
-				yo.capaEdit.classList.toggle('visible');
-				this.nodo.querySelector('input').value = this.nodo.querySelector('span').textContent;
+				clickEdit(capaEdit,yo,span);
 			};
-			capaEdit.appendChild(input);
 		};
+		function clickEdit(capaEdit,yo,span){
+			if(!capaEdit.querySelector('input')){
+				var input = document.createElement('input');
+				input.type='text';
+				input.value = span.textContent;
+				input.onblur = function(){
+					span.textContent = this.value;
+					capaEdit.classList.toggle('visible');
+					capaEdit.querySelector('input').value = yo.nodo.querySelector('span').textContent;
+					capaEdit.removeChild(capaEdit.querySelector('input'));
+					this.onclick = function(){
+						clickEdit(capaEdit,yo,span);
+					};
+				};
+				capaEdit.appendChild(input);
+				capaEdit.onclick = function(){};
+			}else{
+				capaEdit.querySelector('input').value = yo.nodo.querySelector('span').textContent;
+				capaEdit.removeChild(capaEdit.querySelector('input'));
+			}
+			yo.capaEdit.classList.toggle('visible');
+		}
 		/*------------------------------Objeto Selector-------------------*/
 		var Selector = function(atributos){
 			this.atributos = atributos;
@@ -2064,70 +2099,12 @@ var Lista = function(data){
 		  var nodo = document.createElement('section');
 		  nodo.setAttribute('slot','');
 		  nodo.id=this.atributos.codigo;
-				this.nodo = nodo;
-				if(this.atributos.columnas!=1){
-					//la celda con el checkbox como selector del registro o fila
-					if(this.atributos.selector){
-						if(this.atributos.selector.toLowerCase()!=='apagado'){
-								this.agregarSelector(this.atributos);
-						}
-					}else{
-						this.agregarSelector(this.atributos);
-					}
-					var x = 0;
-					for (var variable in this.atributos) {
-						if(x < this.atributos.columnas){
-							if (this.atributos.hasOwnProperty(variable)) {
-								var dataCelda ={
-									nombre: variable,
-									valor: this.atributos[variable],
-									numero: x,
-									columnas: this.atributos.columnas,
-									tipo: this.atributos.tipo
-								};
-								if(this.atributos.editable){
-									if(this.atributos.editable === true){//si editable es igual a true significa que todas las celdas se pueden editar
-										dataCelda.editable = true;
-									}else if(this.atributos.editable.celdas){//si posee el arreglo de las celdas editables
-										if(this.atributos.editable.celdas.indexOf(x+1)!==-1){//si el numero se encuentra dentro de el arreglo
-											dataCelda.editable = true;
-										}
-									}
-								}
-								this.agregarCelda(dataCelda);
-								x++;
-							}
-						}else{
-							break;
-						}
-					}
-					var yo = this;
-					if(this.selector){
-						this.selector.check.asignarClick(function(){
-							if(yo.selector.check.marcado === true){
-								yo.nodo.classList.add("seleccionado");
-								yo.estado = "seleccionado";
-							}else{
-								yo.nodo.classList.remove("seleccionado");
-								yo.estado = "sinAsignar";
-							}
-						});
-					}
-				}else{
-					var html ="";
-					var titulo;
-					var nombreAMostrar;
-					if(data.campo_nombre){
-						nombreAMostrar = data.campo_nombre;
-					}else {
-						nombreAMostrar = 'nombre';
-					}
-					titulo=this.atributos[nombreAMostrar];
-					html+="<article  title>"+titulo+"</article>";
+			this.nodo = nodo;
+			var html = this.construccion();
+			if(html){
 					nodo.innerHTML=html;
-					this.estado='enUso';
-					this.funcionamiento();
-				}
+				  this.funcionamiento();
+			}
 		};
 		Slot.prototype.funcionamiento = function(){
 		  var nodo = this.nodo;
@@ -2139,23 +2116,81 @@ var Lista = function(data){
 
 		Slot.prototype.reconstruirNodo = function(){
 		  var nodo=this.nodo;
-		  var slot=this;
-		  var titulo;
-		  var nombre;
-		  if(data.campo_nombre){
-		    nombre = data.campo_nombre;
-		  }else {
-		    nombre = 'nombre';
-		  }
-		  titulo=this.atributos[nombre];
-
-		  var html="<article  title>"+titulo+"</article>";
-		  setTimeout(function(){
-		    nodo.innerHTML=html;
-		    slot.funcionamiento();
-		  },510);
+			var slot=this;
+			var html = this.construccion();
+			setTimeout(function(){
+				if(html){
+						nodo.innerHTML=html;
+				    slot.funcionamiento();
+				}
+			},310);
 		};
-
+		Slot.prototype.construccion = function(){
+			var html = false;
+			this.nodo.innerHTML="";
+			if(this.atributos.columnas!=1){
+				//la celda con el checkbox como selector del registro o fila
+				if(this.atributos.selector){
+					if(this.atributos.selector.toLowerCase()!=='apagado'){
+							this.agregarSelector(this.atributos);
+					}
+				}else{
+					this.agregarSelector(this.atributos);
+				}
+				var x = 0;
+				for (var variable in this.atributos) {
+					if(x < this.atributos.columnas){
+						if (this.atributos.hasOwnProperty(variable)) {
+							var dataCelda ={
+								nombre: variable,
+								valor: this.atributos[variable],
+								numero: x,
+								columnas: this.atributos.columnas,
+								tipo: this.atributos.tipo
+							};
+							if(this.atributos.editable){
+								if(this.atributos.editable === true){//si editable es igual a true significa que todas las celdas se pueden editar
+									dataCelda.editable = true;
+								}else if(this.atributos.editable.celdas){//si posee el arreglo de las celdas editables
+									if(this.atributos.editable.celdas.indexOf(x+1)!==-1){//si el numero se encuentra dentro de el arreglo
+										dataCelda.editable = true;
+									}
+								}
+							}
+							this.agregarCelda(dataCelda);
+							x++;
+						}
+					}else{
+						break;
+					}
+				}
+				var yo = this;
+				if(this.selector){
+					this.selector.check.asignarClick(function(){
+						if(yo.selector.check.marcado === true){
+							yo.nodo.classList.add("seleccionado");
+							yo.estado = "seleccionado";
+						}else{
+							yo.nodo.classList.remove("seleccionado");
+							yo.estado = "sinAsignar";
+						}
+					});
+				}
+			}else{
+				html ="";
+				var titulo;
+				var nombreAMostrar;
+				if(data.campo_nombre){
+					nombreAMostrar = data.campo_nombre;
+				}else {
+					nombreAMostrar = 'nombre';
+				}
+				titulo=this.atributos[nombreAMostrar];
+				//BUG: al tener mas de una lista en una interfaz muestra undefine en el nombre ejemplo vis_Productor.html usando 3 listas
+				html+="<article  title>"+titulo+"</article>";
+			}
+			return html;
+		};
 		Slot.prototype.destruirNodo = function(){
 		  var nodo = this.nodo;
 		  var slot = this;
@@ -2168,7 +2203,11 @@ var Lista = function(data){
 		  },1110);
 		};
 		Slot.prototype.activar = function(){
-		  this.nodo.getElementsByTagName('article')[0].click();
+			if(this.atributos.columnas===1){
+			  this.nodo.getElementsByTagName('article')[0].click();
+			}else{
+				this.nodo.click();
+			}
 		};
 		Slot.prototype.buscarCelda = function(nombre) {
 			for (var i = 0; i < this.columnas.length; i++) {
@@ -2258,7 +2297,7 @@ var Lista = function(data){
 		if((this.barraPaginacion)||(this.Slots.length === this.registrosPorPagina)){
 			if(!this.barraPaginacion){
 				this.barraPaginacion = new BarraPaginacion({
-					paginas : this.paginas,
+					paginas: this.paginas,
 					paginaActual: this.paginaActual
 				});
 				this.nodo.appendChild(this.barraPaginacion.nodo);
@@ -2298,9 +2337,12 @@ var Lista = function(data){
 		}
   };
 	Lista.prototype.recargar = function(){
+		var yo = this;
 		this.limpiarSlots();
-		this.manejarCarga();
-		this.removerContenedorCarga();
+		return this.manejarCarga()
+			.then(function(){
+				yo.removerContenedorCarga();
+			});
 	};
   Lista.prototype.manejarCarga = function(){
     var carga = this.atributos.carga;
@@ -2330,25 +2372,38 @@ var Lista = function(data){
 				}
 				carga.peticion.registrosPorPagina = this.registrosPorPagina;
 
-        torque.manejarOperacion(carga.peticion,carga.espera,function cargaAutomaticaLista(respuesta){
-          lista.removerContenedorCarga();
-          if(respuesta.success){
-            lista.cargarElementos(respuesta.registros);
+        return torque.manejarOperacion(carga.peticion,carga.espera)
+					.then(function validacionRespuesta(respuesta){
+						if(respuesta.success===1){
+							return Promise.resolve(respuesta);
+						}else{
+							return Promise.reject();
+						}
+					})
+					.then(function cargaAutomaticaLista(respuesta){
+	          lista.removerContenedorCarga();
 						lista.paginas = respuesta.paginas;
-				    lista.manejarPaginacion();
-          }else{
-            lista.noExistenRegistros();
-          }
-          if(lista.atributos.carga.respuesta){
-            lista.atributos.carga.respuesta(lista);
-          }
-      	});
+						lista.cargarElementos(respuesta.registros)
+						 .then(function(){
+							 lista.manejarPaginacion();
+							 return Promise.resolve();
+						 });
+					},function(){
+						lista.noExistenRegistros();
+					})
+					.then(function(){
+	          if(lista.atributos.carga.respuesta){
+	            lista.atributos.carga.respuesta(lista);
+	          }
+						return Promise.resolve();
+	      	});
     	}
     }else if(this.atributos.elementos){
       //si lo elementos de la lista fueron suministrados en la creacion
-      this.cargarElementos(this.atributos.elementos);
+      return this.cargarElementos(this.atributos.elementos);
     }else{
       console.log('la lista se encuentra vacia');
+			return Promise.resolve();
     }
   };
 	Lista.prototype.limpiarSlots = function(){
@@ -2420,7 +2475,9 @@ var Lista = function(data){
 		if( this.nodo.querySelector('section.vacio')){
 			var vacio = this.nodo.querySelector('section.vacio');
 			vacio.parentNode.removeChild(vacio);
-			slot.nodo.classList.add('primero');
+			if((!this.noUsatitulo)&&(!this.poseeCabecera)){
+				slot.nodo.classList.add('primero');
+			}
 		}
     this.Slots.push(slot);
     this.nodo.querySelector('section[cont-slots]').appendChild(slot.nodo);
@@ -2473,11 +2530,12 @@ var Lista = function(data){
 			registros[x].selector = this.atributos.selector;
       this.agregarSlot(registros[x]);
     }
-		if(!this.poseeCabecera){
-			if(!this.noUsatitulo){
-				this.Slots[0].nodo.classList.add('primero');
+		if((!this.noUsatitulo)&&(!this.poseeCabecera)){
+			if(this.Slots[0]){
+					this.Slots[0].nodo.classList.add('primero');
 			}
 		}
+		return Promise.resolve();
   };
 	Lista.prototype.agregarCabecera = function(registros){
 		this.poseeCabecera = true;
@@ -2527,16 +2585,20 @@ var Lista = function(data){
         this.Slots[x].estado='enUso';
         this.Slots[x].nodo.classList.remove('seleccionado');
     }
-    slot.estado='seleccionado';
-    slot.nodo.classList.add('seleccionado');
+		if(slot){
+	    slot.estado='seleccionado';
+	    slot.nodo.classList.add('seleccionado');
+		}
   };
 
   Lista.prototype.buscarSlot = function(objeto){
-    for(x=0;x<this.Slots.length;x++){
-      if(this.Slots[x].atributos.codigo==objeto.codigo){
-        return this.Slots[x];
-      }
-    }
+		if(objeto){
+			for(x=0;x<this.Slots.length;x++){
+				if(this.Slots[x].atributos.codigo==objeto.codigo){
+					return this.Slots[x];
+				}
+			}
+		}
     console.log('el slot no existe');
     return false;
   };
@@ -2583,7 +2645,7 @@ var Lista = function(data){
     var slot=this.buscarSlot(objeto);
     var yo = this;
     if(slot){
-      slot.atributos=objeto;
+      slot.atributos=UI.juntarObjetos(objeto,{columnas:this.atributos.columnas,selector:this.atributos.selector});
       slot.reconstruirNodo();
       setTimeout(function() {
         yo.controlLista(slot);
@@ -2898,10 +2960,22 @@ var ComboBox = function(info){
 			this.agregarOpcion(opcion);
 			this.estado = 'cargando';
 			var yo = this;
-			torque.Operacion(this.data.peticion,function(respuesta){
-				yo.data.opciones = respuesta.registros;
-				arranqueOpciones(yo);
-			});
+
+			if(this.data.valor){
+				torque.Operacion(this.data.peticion)
+					.then(function(respuesta){
+						yo.data.opciones = respuesta.registros;
+						return yo;
+					})
+					.then(arranqueOpciones)
+					.then(function(){yo.asignarValor(yo.data.valor);});
+				this.data.valor = null;
+			}else{
+				torque.Operacion(this.data.peticion,function(respuesta){
+					yo.data.opciones = respuesta.registros;
+					arranqueOpciones(yo);
+				});
+			}
 		}
 	};
 	function arranqueOpciones(combo){
@@ -2915,10 +2989,6 @@ var ComboBox = function(info){
 	this.agregarOpciones = function(opciones){
 		for(var x=0;x<opciones.length;x++){
 			this.agregarOpcion(opciones[x]);
-		}
-		if(this.data.valor){
-			this.asignarValor(this.data.valor);
-			this.data.valor = null;
 		}
 	};
 	this.agregarOpcion = function(opcion){
@@ -2941,7 +3011,7 @@ var ComboBox = function(info){
 		return false;
 	};
 	this.captarValor = function(){
-		var valor = (this.nodo.querySelector('select').value==='-')?null:this.nodo.querySelector('select').value;
+		var valor = (this.nodo.querySelector('select').value==='-')?null:this.nodo.querySelector('select').value.trim();
 		return valor;
 	};
 	this.captarNombre = function(){
@@ -2951,20 +3021,7 @@ var ComboBox = function(info){
 		return this.data.requerido;
 	};
 	this.asignarValor = function(valor){
-		if(this.estado === 'cargando'){
-				var yo = this;
-				yo.valor = valor;
-				this.idIntervalo = setInterval(function(){
-					if(yo.estado !== 'cargando'){
-						yo.seleccionarOpcion({codigo:yo.valor});
-						yo.valor = null;
-						clearInterval(yo.idIntervalo);
-						yo.idIntervalo = null;
-					}
-				},10);
-		}else{
-				this.seleccionarOpcion({codigo:valor});
-		}
+		this.seleccionarOpcion({codigo:valor});
 	};
 	this.deshabilitar = function(){
 		this.select.classList.add('deshabilitado');
@@ -3041,7 +3098,7 @@ var CampoDeTexto = function(info){
 		if(this.nodo.querySelector(tipo).value===''){
 			valor = null;
 		}else{
-			valor = this.nodo.querySelector(tipo).value;
+			valor = this.nodo.querySelector(tipo).value.trim();
 			if(!this.data.usaMinuscula){
 				valor = valor.toUpperCase();
 			}

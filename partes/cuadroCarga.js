@@ -1,4 +1,4 @@
-class CuadroCarga {
+export class CuadroCarga {
 	constructor(info,callback){
 
 		//manejo de interfaz
@@ -46,7 +46,7 @@ class CuadroCarga {
 		this.nodo = cuadro;
 		UI.manejoDeClases(this);
 		this.tamanoTexto(info.mensaje);
-	};
+	}
 	tamanoTexto(texto){
 			var tamano = texto.length;
 			if(tamano < 40){
@@ -58,7 +58,7 @@ class CuadroCarga {
 			}else{
 				this.nodo.style.width = ((tamano/2) * 10) +'px';
 			}
-	};
+	}
 	//esta funcion crea un intervalo de carga que permite manejar dicha carga colocandole un tiempo de espera 5 segundos
 	manejarCarga(nombre){
 		UI.buscarCuadroCarga(nombre).contEspera=0;
@@ -89,7 +89,7 @@ class CuadroCarga {
 				}
 			}
 		},50);
-	};
+	}
 	//funcion en la cual se le pasa parametros al callback al culminar la carga
 	// y muestra un mensaje al culminar la carga
 	culminarCarga(respuesta,callback){
@@ -103,7 +103,7 @@ class CuadroCarga {
 		if(callback!==null){
 			callback(respuesta);
 		}
-	};
+	}
 	//esta funcion mata el intervalo al ejecultarce el callback de dicha carga
 	terminarCarga(){
 		var cuadro = this;
@@ -111,5 +111,5 @@ class CuadroCarga {
 		this.estado = 'cargaCulminada';
 		cuadro.nodo.parentNode.removeChild(cuadro.nodo);
 		UI.removerCuadroCarga(cuadro.nombre);
-	};
-};
+	}
+}

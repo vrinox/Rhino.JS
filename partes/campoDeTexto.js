@@ -1,4 +1,4 @@
-class CampoDeTexto {
+export class CampoDeTexto {
 	constructor(info){
 		this.data = info;
 		this.estado = 'porConstriur';
@@ -40,7 +40,7 @@ class CampoDeTexto {
 			this.asignarValor(this.data.valor);
 			this.data.valor = null;
 		}
-	};
+	}
 	captarValor(){
 		var tipo = this.captarTipo();
 		var valor;
@@ -53,11 +53,11 @@ class CampoDeTexto {
 			}
 		}
 		return valor;
-	};
+	}
 	captarNombre(){
 		var tipo = this.captarTipo();
 		return this.nodo.querySelector(tipo).name;
-	};
+	}
 	captarTipo(){
 		var tipo;
 		if(this.data.tipo==='area'){
@@ -66,24 +66,24 @@ class CampoDeTexto {
 			tipo = 'input';
 		}
 		return tipo;
-	};
+	}
 	captarRequerido(){
 		return this.data.requerido;
-	};
+	}
 	asignarValor(valor) {
 		var tipo = this.captarTipo();
 		this.nodo.querySelector(tipo).value = valor;
-	};
+	}
 	habilitar(){
 		this.nodo.classList.remove('deshabilitado');
 		this.nodo.querySelector(this.captarTipo()).disabled = false;
 		this.nodo.querySelector(this.captarTipo()).focus();
-	};
+	}
 	deshabilitar(){
 		this.nodo.classList.add('deshabilitado');
 		this.nodo.querySelector(this.captarTipo()).disabled = true;
-	};
+	}
 	limpiar(){
 		this.asignarValor("");
-	};
-};
+	}
+}

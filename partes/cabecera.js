@@ -1,9 +1,9 @@
-class Cabecera {
+export class Cabecera {
 	constructor(){
 		this.estado = 'porConstriur';
 		this.nodo = null;
 		this.construir();
-	};
+	}
 
 	construir(){
 		var contenedor = obtenerContenedor();
@@ -14,10 +14,10 @@ class Cabecera {
 		this.funcionamientoBoton();
 		this.estado='enUso';
 		this.nodo = elemento;
-	};
+	}
 	cambiarTexto(texto){
 		this.nodo.querySelector('div[titulo]').innerHTML = texto;
-	};
+	}
 	funcionamientoBoton() {
 		//funcionamiento boton
 		var botonMenu=document.getElementById('menuBtn');
@@ -29,5 +29,5 @@ class Cabecera {
 				menu.setAttribute('estado','visible');
 			}
 		};
-	};
+	}
 }

@@ -1,12 +1,14 @@
 //-----------------Titulo---------------------------
-var Titulo = function(atributos){
+class Titulo {
+	constructor(atributos){
+		this.nodo = null;
+		this.atributos = atributos;
+		//valores por defecto
+		atributos.tipo = atributos.tipo || 'basico';
 
-	this.nodo = null;
-	this.atributos = atributos;
-	//valores por defecto
-	atributos.tipo = atributos.tipo || 'basico';
-
-	this.construirNodo = function(){
+		this.construirNodo();
+	}
+	construirNodo(){
 
 		var nodo = document.createElement('section');
 		nodo.setAttribute('titulo','');
@@ -15,9 +17,8 @@ var Titulo = function(atributos){
 		nodo.classList.add(atributos.tipo);
 
 		this.nodo = nodo;
-	};
-	this.construirNodo();
-};
+	}
+}
 //--------------------Sector----------------------------
 class Sector {
 	constructor(atributos){
@@ -58,32 +59,32 @@ class Sector {
 		if(this.atributos.clases){
 			UI.manejoDeClases(this);
 		}
-	};
+	}
 	agregarFormulario(objForm){
 		objForm.contenedor = this.nodo;
 		this.formulario = new Formulario(objForm);
 		this.nodo.style.height = objForm.plano.altura +'px';
-	};
+	}
 	desvanecerNodo(){
 		this.nodo.classList.add('desaparecer');
 		var s = this;
 		setTimeout(function () {
 			s.nodo.parentNode.removeChild(s.nodo);
 		}, 710);
-	};
+	}
 	destruirNodo(){
 		this.nodo.parentNode.removeChild(this.nodo);
-	};
-};
+	}
+}
 //--------------------fin Objeto Sector--------------------
-class Ventana {
-	constructor(atributos){	
+export class Ventana {
+	constructor(atributos){
 		this.atributos = atributos;
 		this.estado = 'porConstruir';
 		this.sectores = [];
 		this.nodo = null;
 		this.clases = atributos.clases || [];
-	
+
 		this.construirNodo();
 	}
 
@@ -109,13 +110,13 @@ class Ventana {
 		if(this.atributos.clases){
 			UI.manejoDeClases(this);
 		}
-	};
+	}
 	agregarSector(atributos){
 		var sector = new Sector(atributos);
 		this.sectores.push(sector);
 		this.nodo.appendChild(sector.nodo);
 		return sector;
-	};
+	}
 	buscarSector(nombre){
 		for(var x = 0; x < this.sectores.length; x++){
 			if(this.sectores[x].atributos.nombre){
@@ -125,24 +126,24 @@ class Ventana {
 			}
 		}
 		return false;
-	};
+	}
 
 	quitarSector(nombre){
 		var sector = this.buscarSector(nombre);
 		sector.destruirNodo();
 		this.sectores.splice(this.sectores.indexOf(sector),1);
-	};
+	}
 	desvanecerSector(nombre) {
 		var sector = this.buscarSector(nombre);
 		sector.desvanecerNodo();
 		this.sectores.splice(this.sectores.indexOf(sector),1);
-	};
+	}
 
 	agregarTitulo(atributos){
 		var titulo = new Titulo(atributos);
 		this.nodo.insertBefore(titulo.nodo,this.nodo.firstChild);
 		this.titulo = titulo;
-	};
+	}
 
 	destruirNodo(){
 		this.nodo.style.height='0px';
@@ -150,5 +151,5 @@ class Ventana {
 		setTimeout(function(){
 			v.nodo.parentNode.removeChild(v.nodo);
 		},510);
-	};
-};
+	}
+}

@@ -1,4 +1,4 @@
-class Formulario {
+export class Formulario {
 	constructor(atributos){
 		this.campos = [];
 		this.plano = atributos.plano;
@@ -21,7 +21,7 @@ class Formulario {
 				this.deshabilitar();
 			}
 		}
-  };
+  }
 
   agregarCampos(campos){
     for (var i = 0; i < campos.length; i++) {
@@ -30,7 +30,7 @@ class Formulario {
 			this.campos.push(campo);
     	}
     }
-  };
+  }
   agregarCampo(campo){
     var campoNuevo;
 		switch(campo.tipo.toLowerCase()){
@@ -66,7 +66,7 @@ class Formulario {
 		}
 		this.nodo.appendChild(campoNuevo.nodo);
 		return campoNuevo;
- 	};
+ 	}
 	buscarCampo(nombre){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
@@ -75,7 +75,7 @@ class Formulario {
 			}
 		}
 		return -1;
-	};
+	}
 	asignarValores(registro){
 		var campos = this.campos;
 		for (var campo in registro) {
@@ -87,24 +87,24 @@ class Formulario {
 				}
 			}
 		}
-	};
+	}
 	habilitar(){
 		for (var i = this.campos.length -1; i > -1 ; i--) {
 			this.campos[i].habilitar();
 		}
-	};
+	}
 	deshabilitar(){
 		for (var i = 0; i < this.campos.length; i++) {
 			this.campos[i].deshabilitar();
 		}
-	};
+	}
 	captarValores(){
 		var registro = {};
 		for (var i = 0; i < this.campos.length; i++) {
 			registro[this.campos[i].captarNombre()] = this.campos[i].captarValor();
 		}
 		return registro;
-	};
+	}
 	validar(){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
@@ -114,11 +114,11 @@ class Formulario {
 	    }
 	  }
 	  return true;
-	};
+	}
 	limpiar(){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
 				campos[i].limpiar();
 		}
-	};
-};
+	}
+}

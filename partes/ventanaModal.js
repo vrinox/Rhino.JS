@@ -16,7 +16,7 @@ class Cabecera {
 			this.clases = contenido.clases;
 			UI.manejoDeClases(this);
 		}
-	};
+	}
 	manejoDeContenido(contenido){
 		var porConstruir;
 		if(typeof contenido == 'string'){
@@ -27,7 +27,7 @@ class Cabecera {
 		if(porConstruir.html){
 			this.nodo.innerHTML = porConstruir.html;
 		}
-	};
+	}
 	agregarBotonCerrar(){
 		var boton =document.createElement('button');
 		boton.type='button';
@@ -44,7 +44,7 @@ class Cabecera {
 			UI.elementos.modalWindow.eliminarUltimaCapa();
 		};
 		this.nodo.appendChild(boton);
-	};
+	}
 	agregarTipo(tipo){
 		this.revisarTipos();
 		this.nodo.classList.add(tipo);
@@ -84,7 +84,7 @@ class Cabecera {
 				console.log('no existe icono para'+tipo);
 				break;
 		}
-	};
+	}
 	revisarTipos(){
 		var tipos = ['informacion','error','advertencia'];
 		var nodo = this.nodo;
@@ -97,8 +97,8 @@ class Cabecera {
 		if(icono){
 			icono.parentNode.removeChild(icono);
 		}
-	};
-};
+	}
+}
 class Cuerpo {
 	constructor(contenido){
 		this.estado='sinConstruir';
@@ -113,7 +113,7 @@ class Cuerpo {
 		nodo.setAttribute('cuerpo','');
 		this.nodo=nodo;
 		this.manejoDeContenido(contenido);
-	};
+	}
 	//esta funcion revisa el contenido y construye la interfaz que le
 	//fue pasada y la construye
 	manejoDeContenido(contenido){
@@ -142,20 +142,20 @@ class Cuerpo {
 			this.clases = porConstruir.clases;
 			UI.manejoDeClases(this);
 		}
-	};
+	}
 
 	agregarCampos(campos){
 		for(var x = 0;x < campos.length; x++){
 			this.agregarCampo(campos[x]);
 		}
-	};
+	}
 
 	agregarCampo(campo){
 		var contenedor = this.nodo;
 		var campoNuevo = UI.agregarCampo(campo,contenedor);
 		this.campos.push(campoNuevo);
-	};
-};
+	}
+}
 
 class Pie{
 	constructor(contenido){
@@ -176,7 +176,7 @@ class Pie{
 			this.clases = contenido.clases;
 			UI.manejoDeClases(this);
 		}
-	};
+	}
 	manejoDeContenido(contenido){
 		var porConstruir;
 		if(typeof contenido == 'string'){
@@ -187,14 +187,14 @@ class Pie{
 		if(porConstruir.html){
 			this.nodo.innerHTML = porConstruir.html;
 		}
-	};
+	}
 	desaparecer(){
 		this.nodo.style.height = '0px';
 		this.nodo.innerHTML='';
-	};
-};
+	}
+}
 /*--------------------------------------------Objeto CapaContenido--------------------------------*/
-class capaContenido{ 
+class capaContenido{
 	constructor(){
 
 		this.estado = 'sinConstruir';
@@ -215,7 +215,7 @@ class capaContenido{
 		setTimeout(function(){
 			nodo.classList.add('aparecer');
 		},300);
-	};
+	}
 
 	agregarParte(parte,contenido){
 		switch(parte){
@@ -232,7 +232,7 @@ class capaContenido{
 				this.nodo.appendChild(this.partes.pie.nodo);
 			break;
 		}
-	};
+	}
 
 	removerParte(parte){
 			switch (parte) {
@@ -257,7 +257,7 @@ class capaContenido{
 				default:
 					console.log(parte+'no existe');
 			}
-	};
+	}
 
 	dibujarUI(data){
 		data.tipo=data.tipo || 'contenedor';
@@ -278,7 +278,7 @@ class capaContenido{
 		}else if(data.contenido.toLowerCase() === 'completo'){
 			this.nodo.classList.add('completo');
 		}
-	};
+	}
 	convertirEnFormulario(formulario){
 		//Cambios Generales
 		if(!this.nodo.classList.contains('ancho')){
@@ -306,7 +306,7 @@ class capaContenido{
 			this.agregarParte('pie',formulario.pie);
 		}
 		return this.partes.cuerpo.formulario;
-	};
+	}
 	convertirEnMensaje(mensaje){
 		//cambios Generales
 		if(this.nodo.classList.contains('ancho')){
@@ -331,8 +331,8 @@ class capaContenido{
 		if(this.partes.pie){
 			this.partes.pie.desaparecer();
 		}
-	};
-};
+	}
+}
 
 class capaExterior {
 	constructor(bloqueo){
@@ -355,9 +355,9 @@ class capaExterior {
 			nodo.style.opacity='0.8';
 		},10);
 
-	};
-};
-class modalWindow{	
+	}
+}
+export class modalWindow{
 	contructor(){
 		this.estado='sinConstruir';
 		this.capas = [];
@@ -369,7 +369,7 @@ class modalWindow{
 		contenido.dibujarUI(data);
 		this.manejoDeCapas();
 		return contenido;
-	};
+	}
 	agregarCapa(tipo,bloqueo){
 		var capaNueva=false;
 		var zIndex;
@@ -394,7 +394,7 @@ class modalWindow{
 			//TODO: capa opciones
 		}
 		return capaNueva;
-	};
+	}
 	removerCapa(){
 		var capaExterior=UI.elementos.modalWindow.buscarCapa(this);
 		var capaContenido = null;
@@ -442,7 +442,7 @@ class modalWindow{
 				},810);
 			}
 		}
-	};
+	}
 
 	buscarCapa(nodo){
 		var capa=false;
@@ -453,7 +453,7 @@ class modalWindow{
 			}
 		}
 		return capa;
-	};
+	}
 
 	buscarUltimaCapaContenido(){
 		if(this.capas.length){
@@ -466,7 +466,7 @@ class modalWindow{
 		}else{
 			return false;
 		}
-	};
+	}
 
 	existeExterior(){
 		var capas=this.capas;
@@ -478,12 +478,12 @@ class modalWindow{
 			}
 		}
 		return existe;
-	};
+	}
 
 	obtenerUltimaCapa(){
 		var ultimaCapa = this.capas[this.capas.length-1];
 		return ultimaCapa;
-	};
+	}
 
 	manejoDeCapas(){
 		this.scrollTop = document.body.scrollTop;
@@ -500,8 +500,8 @@ class modalWindow{
 		}else{
 			contenedor.style.position='inherit';
 		}
-	};
-	
+	}
+
 	eliminarUltimaCapa(){
 		for(var x=this.capas.length-1;x>=0;x--){
 			if(this.capas[x].tipo=='exterior'){
@@ -510,5 +510,5 @@ class modalWindow{
 				break;
 			}
 		}
-	};
-};
+	}
+}

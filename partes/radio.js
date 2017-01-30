@@ -1,4 +1,4 @@
-class Radio {
+export class Radio {
 	constructor(info){
 		//nombre,opciones,seleccionado
 		this.data = info;
@@ -19,7 +19,7 @@ class Radio {
 		if(this.data.valor){
 			this.asignarValor(this.data.valor);
 		}
-	};
+	}
 	agregarOpcion(opcion){
 		var nodoOpcion = document.createElement('label');
 		nodoOpcion.classList.toggle('radio');
@@ -28,12 +28,12 @@ class Radio {
 		nodoOpcion.innerHTML=html;
 		this.opciones.push(nodoOpcion);
 		this.nodo.appendChild(nodoOpcion);
-	};
+	}
 	agregarOpciones(){
 		for(var x=0; x<this.data.opciones.length;x++){
 			this.agregarOpcion(this.data.opciones[x]);
 		}
-	};
+	}
 
 	captarValor(){
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
@@ -43,13 +43,13 @@ class Radio {
 			}
 		}
 		return null;
-	};
+	}
 	captarNombre(){
 		return this.nodo.querySelector('input[type="radio"]').name;
-	};
+	}
 	captarRequerido(){
 		return this.data.requerido;
-	};
+	}
 	asignarValor(valor){
 		this.valor = valor;
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
@@ -60,25 +60,25 @@ class Radio {
 				opc.checked = false;
 			}
 		});
-	};
+	}
 	deshabilitar(){
 		this.nodo.classList.add('desahbilitado');
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.disabled = true;
 		});
-	};
+	}
 	habilitar(){
 		this.nodo.classList.remove('desahbilitado');
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.disabled = false;
 		});
-	};
+	}
 	limpiar(){
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.checked = false;
 		});
-	};
-};
+	}
+}

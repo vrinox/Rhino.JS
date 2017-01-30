@@ -32,12 +32,12 @@ class Elemento{
 			};
 		}
 		this.nodo = nodo;
-	};
-};
+	}
+}
 
 class SubCapa {
 	constructor(yo,padre){
-		
+
 		this.estado='porConstruir';
 		this.nodo = null;
 		this.elementos=[];
@@ -89,13 +89,13 @@ class SubCapa {
 			}
 		}
 
-	};
+	}
 	agregarElemento(contenido,enlace){
 		var elementoNuevo = new Elemento(contenido,enlace);
 		this.nodo.appendChild(elementoNuevo.nodo);
 		this.elementos.push(elementoNuevo);
 		return elementoNuevo;
-	};
+	}
 	buscarElemento(codigo){
 		for(var x=0;x<this.elementos.length;x++){
 			if(this.elementos[x].enlace.substring(1,this.elementos[x].enlace.length)==codigo){
@@ -103,12 +103,12 @@ class SubCapa {
 			}
 		}
 		return false;
-	};
-};
+	}
+}
 
-class Menu {
+export class Menu {
 
-	constructor(){	
+	constructor(){
 		this.estado = 'porConstriur';
 		this.capaActiva = null;
 		this.partes = [];
@@ -169,14 +169,14 @@ class Menu {
 		html+='<article seguridad  onclick="location.href=\'vis_Cuenta.html\'"><i></i></article>';
 		html+='<article books><i></i></article>';
 		pie.innerHTML=html;
-	};
+	}
 	getEstado(){
 		return this.estado;
-	};
+	}
 	abrirMenu(){
 		var btnMenu = document.getElementById('menuBtn');
 		btnMenu.click();
-	};
+	}
 	activarCapa(capa){
 		if(this.capaActiva===undefined){
 			capa.nodo.classList.remove('siguiente');
@@ -192,7 +192,7 @@ class Menu {
 			this.capaActiva.nodo.classList.remove('anterior');
 		}
 
-	};
+	}
 	avanzar(nodo){
 		var codigo = nodo.getAttribute('enlace').substring(1,nodo.getAttribute('enlace').length);
 		var lista = this.capaActiva.hijos;
@@ -204,14 +204,14 @@ class Menu {
 				this.cambiarTitulo(lista[x].yo.titulo);
 			}
 		}
-	};
+	}
 	regresar(){
 		this.capaActiva.nodo.classList.remove('capaActiva');
 		this.capaActiva.nodo.classList.add('siguiente');
 		this.activarCapa(this.capaActiva.padre);
 		var titulo = (this.capaActiva.padre!==null)?this.capaActiva.yo.titulo:'Menu';
 		this.cambiarTitulo(titulo);
-	};
+	}
 	activarSeleccionado(capa){
 		var ruta =  [];
 		do{
@@ -221,7 +221,7 @@ class Menu {
 		for(var x = 0; x < ruta.length; x++){
 			ruta[x].nodo.click();
 		}
-	};
+	}
 	buscarRuta(capa) {
 		seleccionado = this.seleccionado;
 		var ruta = [];
@@ -241,7 +241,7 @@ class Menu {
 			}
 		}
 		return false;
-	};
+	}
 	cambiarTitulo(texto){
 		var titulo = this.partes.titulo;
 		titulo.classList.remove('retroceso');
@@ -253,5 +253,5 @@ class Menu {
 			};
 		}
 		titulo.textContent = texto;
-	};
-};
+	}
+}

@@ -24,8 +24,8 @@ class Campo {
 
 		this.check = check;
 		this.box = box;
-	};
-};
+	}
+}
 class Titulo{
 	constructor(nombre){
 		this.nodo = null;
@@ -37,10 +37,9 @@ class Titulo{
 		this.nodo = nodo;
 
 		nodo.textContent = nombre;
-	};
-	
-};
-class CheckBox{
+	}
+}
+export class CheckBox{
 	//marcado,habilitado,valor,nombre,requerido,usaTitulo,eslabon
 	constructor(info){
 		//partes
@@ -88,27 +87,27 @@ class CheckBox{
 		}else{
 			this.desmarcar();
 		}
-	};
+	}
 	cambiarEstado(){
 		if(this.marcado){
 			this.desmarcar();
 		}else{
 			this.marcar();
 		}
-	};
+	}
 	marcar(){
 		this.campo.nodo.classList.add('marcado');
 		this.marcado = true;
-	};
+	}
 	desmarcar(){
 		this.campo.nodo.classList.remove('marcado');
 		this.marcado = false;
-	};
+	}
 	deshabilitar(){
 		var yo = this;
 		this.nodo.onclick = function(){};
 		this.estado = 'deshabilitado';
-	};
+	}
 	habilitar(){
 		var yo = this;
 		this.nodo.onclick = function(){
@@ -118,23 +117,23 @@ class CheckBox{
 			}
 		};
 		this.estado = 'habilitado';
-	};
+	}
 	captarNombre(){
 		return this.nombre;
-	};
+	}
 	captarValor(){
 		if(this.marcado){
 			return this.valor;
 		}else{
 			return false;
 		}
-	};
+	}
 	captarRequerido(){
 		return this.requerido;
-	};
+	}
 	limpiar(){
 		this.desmarcar();
-	};
+	}
 	asignarClick(clickFunction){
 		var yo = this;
 		this.onclick = clickFunction;
@@ -142,5 +141,5 @@ class CheckBox{
 			this.deshabilitar();
 			this.habilitar();
 		}
-	};
-};
+	}
+}

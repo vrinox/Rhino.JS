@@ -1,4 +1,4 @@
-class Boton { 
+export class Boton {
 	constructor(atributos){
 		this.atributos = atributos;
 		this.tipo = atributos.tipo.toLowerCase();
@@ -87,16 +87,16 @@ class Boton {
 		if(atributos.contenido){
 			this.nodo.textContent = atributos.contenido;
 		}
-	};
-};
-class Botonera {
+	}
+}
+export class Botonera {
 	constructor(atributos){
 		this.estructura = atributos.botones;
 		this.estado = 'porConstruir';
 		this.nodo = null;
 		this.botones = [];
 		construir();
-	
+
 	}
 	construir(){
 		var contenedor = atributos.contenedor;
@@ -122,14 +122,14 @@ class Botonera {
 				};
 			}
 		}
-	};
-	inicializarBotones = function(){
+	}
+	inicializarBotones(){
 		var botones = this.estructura;
 		for(var x = 0; x < botones.length; x++){
 			this.agregarBoton(botones[x]);
 		}
 		this.agregarEfectos();
-	};
+	}
 	agregarBoton(consBoton){
 		var botonera = this.nodo;
 		var existe = false;
@@ -158,15 +158,15 @@ class Botonera {
 			this.botones.push(boton);
 		}
 		return boton;
-	};
+	}
 	agregarBotones(botones){
 		var tiempo = 20;
 		for(var x = 0; x < botones.length; x++){
-			espera(x,tiempo,botones,'agregar');
+			this.espera(x,tiempo,botones,'agregar');
 			tiempo+=20;
 		}
-	};
-	function espera(x,tiempo,botones,operacion){
+	}
+	espera(x,tiempo,botones,operacion){
 		setTimeout(function(){
 			if(operacion === 'quitar'){
 				UI.elementos.botonera.quitarBoton(botones[x]);
@@ -181,21 +181,21 @@ class Botonera {
 			espera(x,tiempo,botones,'quitar');
 			tiempo+=20;
 		}
-	};
+	}
 	gestionarBotones(botones){
 		var tiempo = 20;
 		if(botones.quitar[0] === 'todos'){
 			botones.quitar = this.botones;
 		}
 		for(var x = botones.quitar.length -1; x >= 0 ; x--){
-			espera(x,tiempo,botones.quitar,'quitar');
+			this.espera(x,tiempo,botones.quitar,'quitar');
 			tiempo+=20;
 		}
 		for(var i = 0; i < botones.agregar.length; i++){
-			espera(i,tiempo,botones.agregar,'agregar');
+			this.espera(i,tiempo,botones.agregar,'agregar');
 			tiempo+=20;
 		}
-	};
+	}
 	agregarEfectos(){
 		var botones = this.botones;
 		if(botones.length>1){
@@ -225,7 +225,7 @@ class Botonera {
 				};
 			}
 		}
-	};
+	}
 	buscarBoton(tipo){
 		var botones = this.botones;
 		for(var x = 0; x < botones.length; x++){
@@ -234,7 +234,7 @@ class Botonera {
 			}
 		}
 		return false;
-	};
+	}
 	listarBotones(){
 		var lista = this.botones;
 		var resultado = 'estos son los botones agregados:\n';
@@ -242,10 +242,10 @@ class Botonera {
 			resultado += '\t'+lista[x].tipo+'\n';
 		}
 		console.log(resultado);
-	};
+	}
 	getEstado(){
 		console.log(this.estado);
-	};
+	}
 	quitarBoton(consBoton){
 		if(typeof consBoton == 'string'){
 			consBoton = {tipo:consBoton};
@@ -260,6 +260,5 @@ class Botonera {
 				this.botones.splice(this.botones.indexOf(eliminar),1);
 			}
 		}
-	};
-
-};
+	}
+}

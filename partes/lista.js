@@ -14,11 +14,11 @@ class Pagina {
 			nodo.classList.add(this.atributos.clase);
 		}
 		this.nodo = nodo;
-	};
-};
+	}
+}
 class BarraPaginacion{
 	constructor(atributos){
-		
+
 		this.atributos = atributos;
 		this.nodo = null;
 		this.paginas = [];
@@ -33,7 +33,7 @@ class BarraPaginacion{
 										"<input type='text' placeHolder='num'><l>ir</l>"+"</div>";
 		this.nodo = nodo;
 		this.agregarPaginas();
-	};
+	}
 	agregarPaginas(){
 		if(this.paginas.length){
 			this.limpiarPaginas();
@@ -50,14 +50,14 @@ class BarraPaginacion{
 		if(paginacion.paginaActual < paginacion.paginas-3){
 			this.agregarPagina(paginacion.paginas,'ultima');
 		}
-	};
+	}
 	agregarPagina(numero,clase){
 		if((numero > 0)&&(numero <= this.atributos.paginas)){
 			var pagina = new Pagina({'numero':numero,'clase':clase});
 			this.nodo.querySelector('div[cont-pag]').appendChild(pagina.nodo);
 			this.paginas.push(pagina);
 		}
-	};
+	}
 	buscarPagina(numero){
 		for (var i = 0; i < this.paginas.length; i++) {
 			if(this.paginas[i].atributos.numero === numero){
@@ -65,20 +65,20 @@ class BarraPaginacion{
 			}
 		}
 		return false;
-	};
+	}
 	quitarPagina(pag){
 		var pagina = this.buscarPagina(pag);
 		pagina.nodo.parentNode.removeChild(pagina.nodo);
 		this.paginas.splice(this.paginas.indexOf(pagina),1);
-	};
+	}
 	limpiarPaginas(){
 		var barra = this;
 		var longitud = this.paginas.length;
 		for(var x = 0; x < longitud; x++){
 			this.quitarPagina(this.paginas[0].atributos.numero);
 		}
-	};
-};
+	}
+}
 class Celda {
 	constructor(atributos){
 		this.atributos = atributos;
@@ -91,7 +91,7 @@ class Celda {
 	captarValor(){
 		var valor = this.nodo.querySelector('span[valor]').textContent.trim();
 		return valor;
-	};
+	}
 	construirNodo(){
 		var nodo = document.createElement('div');
 		if(this.atributos.tipo){
@@ -115,7 +115,7 @@ class Celda {
 				this.agregarCapaEdit();
 			}
 		}
-	};
+	}
 	agregarCapaEdit() {
 		var capaEdit = document.createElement('div');
 		capaEdit.setAttribute('edit','');
@@ -128,8 +128,8 @@ class Celda {
 		this.capaEdit.onclick = function(){
 			clickEdit(capaEdit,yo,span);
 		};
-	};
-};
+	}
+}
 function clickEdit(capaEdit,yo,span){
 	if(!capaEdit.querySelector('input')){
 		var input = document.createElement('input');
@@ -191,19 +191,19 @@ class Selector {
 				}
 			}
 		};
-	};
+	}
 	activar(){
 		this.check.nodo.click();
-	};
+	}
 	agregarOnSelect(funcion,slot){
 		this.onSelect = funcion;
 		this.slot = slot;
-	};
+	}
 	agregarOnDeselect(funcion,slot){
 		this.onDeselect = funcion;
 		this.slot = slot;
-	};
-};
+	}
+}
 class Slot{
 	constructor(registro){
 	    this.atributos = registro;
@@ -218,11 +218,11 @@ class Slot{
 		this.nodo.appendChild(newCelda.nodo);
 		this.columnas.push(newCelda);
 		return newCelda;
-	};
+	}
 	agregarSelector(registro){
 		this.selector = new Selector(registro);
 		this.nodo.appendChild(this.selector.nodo);
-	};
+	}
 	construirNodo(){
 	  var nodo = document.createElement('section');
 	  nodo.setAttribute('slot','');
@@ -233,14 +233,14 @@ class Slot{
 				nodo.innerHTML=html;
 			  this.funcionamiento();
 		}
-	};
+	}
 	funcionamiento(){
 	  var nodo = this.nodo;
 	  var article =nodo.getElementsByTagName('article')[0];
 	  article.onclick=function(e){
 	    agregarRippleEvent(this.parentNode,e);
 	  };
-	};
+	}
 
 	reconstruirNodo(){
 	  var nodo=this.nodo;
@@ -252,7 +252,7 @@ class Slot{
 			    slot.funcionamiento();
 			}
 		},310);
-	};
+	}
 	construccion(){
 		var html = false;
 		this.nodo.innerHTML="";
@@ -318,7 +318,7 @@ class Slot{
 			html+="<article  title>"+titulo+"</article>";
 		}
 		return html;
-	};
+	}
 	destruirNod(){
 	  var nodo = this.nodo;
 	  var slot = this;
@@ -329,14 +329,14 @@ class Slot{
 	  setTimeout(function(){
 	    nodo.parentNode.removeChild(nodo);
 	  },1110);
-	};
+	}
 	activar(){
 		if(this.atributos.columnas===1){
 		  this.nodo.getElementsByTagName('article')[0].click();
 		}else{
 			this.nodo.click();
 		}
-	};
+	}
 	buscarCelda(nombre) {
 		for (var i = 0; i < this.columnas.length; i++) {
 			if(this.columnas[i].atributos.nombre === nombre){
@@ -344,10 +344,10 @@ class Slot{
 			}
 		}
 		return false;
-	};
-  };
+	}
+}
 
-class Lista {
+export class Lista {
 	constructor(data){
 		this.Slots = [];
 		this.atributos = data;
@@ -425,7 +425,7 @@ class Lista {
 	    if(this.atributos.clases){
 				UI.manejoDeClases(this);
 			}
-	};
+	}
 
     manejarPaginacion(){
 		if((this.barraPaginacion)||(this.Slots.length === this.registrosPorPagina)){
@@ -469,7 +469,7 @@ class Lista {
 				}
 			};
 		}
-	};
+	}
 	recargar(){
 		var yo = this;
 		this.limpiarSlots();
@@ -477,7 +477,7 @@ class Lista {
 			.then(function(){
 				yo.removerContenedorCarga();
 			});
-	};
+	}
 	manejarCarga(){
 	    var carga = this.atributos.carga;
 	    //si no posee la info del cuadro de carga toma los valore por defecto
@@ -539,25 +539,25 @@ class Lista {
 	      console.log('la lista se encuentra vacia');
 				return Promise.resolve();
 	    }
-	};
+	}
 	limpiarSlots(){
 		var longitud =this.Slots.length;
 		for (var i = 0; i < longitud; i++) {
 			this.quitarSlot(this.Slots[0].atributos);
 		}
-	};
+	}
 	crearContenedorCarga(){
 	var contenedor = document.createElement('section');
 	contenedor.setAttribute('contenedorCarga','');
 	this.nodo.querySelector('section[cont-slots]').appendChild(contenedor);
 	return contenedor;
-	};
+	}
 	removerContenedorCarga(){
 	var nodos = this.nodo.querySelectorAll('section[contenedorCarga]');
 		nodos.forEach(function(nodo){
 	    nodo.parentNode.removeChild(nodo);
 		});
-	};
+	}
 	noExistenRegistros(){
 		if(!this.nodo.querySelector('section[cont-slots]').querySelector('section.vacio')){
 			var ayuda = document.createElement('section');
@@ -565,7 +565,7 @@ class Lista {
 			ayuda.textContent = 'No existen Registros';
 			this.nodo.querySelector('section[cont-slots]').appendChild(ayuda);
 		}
-	};
+	}
 	abrirCampoBusqueda(){
 		var botonBusqueda = this.nodo.querySelector('button[btnbusq]');
 		botonBusqueda.parentNode.classList.add('buscar');
@@ -575,7 +575,7 @@ class Lista {
 					lista.buscarElementos();
 				};
 		},10);
-	};
+	}
 
 	cerrarCampoBusqueda(){
 		var botonBusqueda = this.nodo.querySelector('button[btnbusq]');
@@ -587,19 +587,19 @@ class Lista {
 		setTimeout(function(){
 		   botonBusqueda.onclick=function(){lista.abrirCampoBusqueda();};
 		},20);
-	};
+	}
 
 	buscarElementos(){
 		this.atributos.carga.peticion.valor = this.nodo.querySelector('input[campBusq]').value.toUpperCase();
 		this.recargar();
-	};
+	}
 
-	listarSlots = function(){
+	listarSlots(){
 		console.log('Slots:');
 		for(var x=0;x<this.Slots.length;x++){
 		  console.log('nombre: '+this.Slots[x].atributos.nombre+'\testado: '+this.Slots[x].estado);
 		}
-	};
+	}
 	agregarSlot(data){
 		if(data){//informacion que necesito que llegue al slot
 			data.columnas = this.columnas;
@@ -635,7 +635,7 @@ class Lista {
 		}
 			this.verificarBoton();
 		return slot.nodo;
-	};
+	}
 	quitarSlot(objeto){
 		var slot = this.buscarSlot(objeto);
 		slot.destruirNodo();
@@ -644,7 +644,7 @@ class Lista {
 			this.noExistenRegistros();
 		}
 		this.verificarBoton();
-	};
+	}
 	verificarBoton(){
 		if(!this.noUsatitulo){
 			if(this.Slots.length<this.registrosPorPagina){
@@ -653,7 +653,7 @@ class Lista {
 				this.nodo.querySelector('button[btnBusq]').classList.remove('invisible');
 			}
 		}
-	};
+	}
   	cargarElementos(registros){
 		if(this.columnas !== 1){
 			if(!this.atributos.sinCabecera){
@@ -670,7 +670,7 @@ class Lista {
 			}
 		}
 		return Promise.resolve();
-	};
+	}
 	agregarCabecera(registros){
 		this.poseeCabecera = true;
 		var cabeceras = {};
@@ -713,7 +713,7 @@ class Lista {
 				this.cabecera.nodo.setAttribute('fija','');
 			}
 		}
-	};
+	}
   	controlLista(slot){
 	    for(var x=0;x<this.Slots.length;x++){
 	        this.Slots[x].estado='enUso';
@@ -723,7 +723,7 @@ class Lista {
 		    slot.estado='seleccionado';
 		    slot.nodo.classList.add('seleccionado');
 		}
-	};
+	}
 
 	buscarSlot(objeto){
 		if(objeto){
@@ -735,7 +735,7 @@ class Lista {
 		}
 		console.log('el slot no existe');
 		return false;
-	};
+	}
 
 	buscarSlotPorNombre(objeto){
 		for(x=0;x<this.Slots.length;x++){
@@ -745,7 +745,7 @@ class Lista {
 		}
 		console.log('el slot no existe');
 		return false;
-	};
+	}
 
 	cambiarTextoSlots(cambio){
 		if(cambio=='mediaQuery'){
@@ -765,7 +765,7 @@ class Lista {
 		    this.Slots[i].funcionamiento();
 		  }
 		}
-	};
+	}
 
 	actualizarLista(cambios){
 		if(cambios instanceof Array){
@@ -773,7 +773,7 @@ class Lista {
 		}else{
 		  this.actualizarSlot(cambios);
 		}
-	};
+	}
 
 	actualizarSlot(objeto){
 		var slot=this.buscarSlot(objeto);
@@ -785,7 +785,7 @@ class Lista {
 		    yo.controlLista(slot);
 		  }, 510);
 		}
-	};
+	}
 
 	obtenerSeleccionado(){
 		var seleccionado = [];
@@ -802,12 +802,12 @@ class Lista {
 			return false;
 		}
 
-	};
+	}
   	destruirNodo(){
 		this.nodo.style.height='0px';
 		var l = this;
 		setTimeout(function(){
 			l.nodo.parentNode.removeChild(l.nodo);
 		},510);
-	};
-};
+	}
+}

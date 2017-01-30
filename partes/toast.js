@@ -1,12 +1,12 @@
-class Toasts{
+export class Toasts{
 	constructor(atributos){
 		this.atributos = atributos;
 		this.nodo = null;
 		this.atributos.efecto = atributos.efecto || 'mostrar';
 		this.atributos.tipo = atributos.tipo || 'mobile';
-		
+
 		this.construirNodo();
-	};
+	}
 	construirNodo(){
 		var nodo = document.createElement('div');
 		nodo.setAttribute('toasts-'+this.atributos.tipo,'');
@@ -26,5 +26,5 @@ class Toasts{
 			},500);
 		},5000);
 		this.nodo = nodo;
-	};
+	}
 }

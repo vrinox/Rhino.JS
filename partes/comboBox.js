@@ -1,4 +1,4 @@
-class ComboBox {
+export class ComboBox {
 	constructor(info){
 		//nombre,opciones,seleccionado,eslabon
 		this.data = info;
@@ -45,7 +45,7 @@ class ComboBox {
 				};
 				this.agregarOpcion(opcion);
 			}
-			arranqueOpciones(this);
+			this.arranqueOpciones(this);
 		}else{
 			opcion = {
 				codigo : '-',
@@ -61,18 +61,20 @@ class ComboBox {
 						yo.data.opciones = respuesta.registros;
 						return yo;
 					})
-					.then(arranqueOpciones)
+					.then(function(combo){
+						combo.arranqueOpciones(combo);
+					})
 					.then(function(){yo.asignarValor(yo.data.valor);});
 				this.data.valor = null;
 			}else{
 				torque.Operacion(this.data.peticion,function(respuesta){
 					yo.data.opciones = respuesta.registros;
-					arranqueOpciones(yo);
+					this.arranqueOpciones(yo);
 				});
 			}
 		}
-	};
-	function arranqueOpciones(combo){
+	}
+	arranqueOpciones(combo){
 		if(combo.data.titulo){
 			combo.select.options[0].textContent='Elija un '+combo.data.titulo;
 		}
@@ -84,14 +86,14 @@ class ComboBox {
 		for(var x=0;x<opciones.length;x++){
 			this.agregarOpcion(opciones[x]);
 		}
-	};
+	}
 	agregarOpcion(opcion){
 		var select=this.nodo.getElementsByTagName('select')[0];
 		var nuevaOp=document.createElement('option');
 		nuevaOp.textContent=opcion.nombre;
 		nuevaOp.value=opcion.codigo;
 		select.appendChild(nuevaOp);
-	};
+	}
 	seleccionarOpcion(opcion){
 		var select=this.nodo.getElementsByTagName('select')[0];
 		select.value = opcion.codigo;
@@ -103,33 +105,33 @@ class ComboBox {
 			}
 		}
 		return false;
-	};
+	}
 	captarValor(){
 		var valor = (this.nodo.querySelector('select').value==='-')?null:this.nodo.querySelector('select').value.trim();
 		return valor;
-	};
+	}
 	captarNombre(){
 		return this.nodo.querySelector('select').name;
-	};
-	captarRequerido = function(){
+	}
+	captarRequerido(){
 		return this.data.requerido;
-	};
+	}
 	asignarValor(valor){
 		this.seleccionarOpcion({codigo:valor});
-	};
+	}
 	deshabilitar(){
 		this.select.classList.add('deshabilitado');
 		var article = this.nodo.querySelector('article');
 		article.onclick = function(){};
-	};
+	}
 	habilitar(){
 		this.select.classList.remove('deshabilitado');
 		var article = this.nodo.querySelector('article');
 		article.onclick = function(){
 			construirCapaSelect(this);
 		};
-	};
+	}
 	limpiar(){
 		this.select.selectedIndex = 0;
-	};
-};
+	}
+}

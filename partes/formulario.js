@@ -1,12 +1,15 @@
-var Formulario = function(atributos){
-	this.campos = [];
-	this.plano = atributos.plano;
-	this.tipo = atributos.tipo;
-	this.nodo = null;
-	this.registroId = null;
-	this.registroAct= atributos.registroAct || null;
+class Formulario {
+	constructor(atributos){
+		this.campos = [];
+		this.plano = atributos.plano;
+		this.tipo = atributos.tipo;
+		this.nodo = null;
+		this.registroId = null;
+		this.registroAct= atributos.registroAct || null;
 
-  this.construirNodo = function(){
+		this.construirNodo();
+	}
+  construirNodo(){
 		this.nodo = document.createElement('form');
 		atributos.contenedor.appendChild(this.nodo);
 		atributos.contenedor.setAttribute('formulario','');
@@ -20,7 +23,7 @@ var Formulario = function(atributos){
 		}
   };
 
-  this.agregarCampos = function(campos){
+  agregarCampos(campos){
     for (var i = 0; i < campos.length; i++) {
     	var campo = this.agregarCampo(campos[i]);
     	if(!(campo instanceof SaltoDeLinea)){
@@ -28,7 +31,7 @@ var Formulario = function(atributos){
     	}
     }
   };
-  this.agregarCampo = function(campo){
+  agregarCampo(campo){
     var campoNuevo;
 		switch(campo.tipo.toLowerCase()){
 			case 'campodetexto':
@@ -64,7 +67,7 @@ var Formulario = function(atributos){
 		this.nodo.appendChild(campoNuevo.nodo);
 		return campoNuevo;
  	};
-	this.buscarCampo = function(nombre){
+	buscarCampo(nombre){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
 			if(campos[i].captarNombre().toLowerCase() === nombre.toLowerCase()){
@@ -73,7 +76,7 @@ var Formulario = function(atributos){
 		}
 		return -1;
 	};
-	this.asignarValores = function(registro){
+	asignarValores(registro){
 		var campos = this.campos;
 		for (var campo in registro) {
 			if (registro.hasOwnProperty(campo)) {
@@ -85,24 +88,24 @@ var Formulario = function(atributos){
 			}
 		}
 	};
-	this.habilitar = function(){
+	habilitar(){
 		for (var i = this.campos.length -1; i > -1 ; i--) {
 			this.campos[i].habilitar();
 		}
 	};
-	this.deshabilitar = function(){
+	deshabilitar(){
 		for (var i = 0; i < this.campos.length; i++) {
 			this.campos[i].deshabilitar();
 		}
 	};
-	this.captarValores = function(){
+	captarValores(){
 		var registro = {};
 		for (var i = 0; i < this.campos.length; i++) {
 			registro[this.campos[i].captarNombre()] = this.campos[i].captarValor();
 		}
 		return registro;
 	};
-	this.validar = function(){
+	validar(){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
 	    //valido el campo
@@ -112,11 +115,10 @@ var Formulario = function(atributos){
 	  }
 	  return true;
 	};
-	this.limpiar =  function(){
+	limpiar(){
 		var campos = this.campos;
 		for (var i = 0; i < campos.length; i++) {
 				campos[i].limpiar();
 		}
 	};
-  this.construirNodo();
 };

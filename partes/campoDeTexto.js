@@ -1,12 +1,16 @@
-var CampoDeTexto = function(info){
-	this.data = info;
-	this.estado = 'porConstriur';
-	this.data.eslabon = info.eslabon || 'simple';
-	this.data.usaToolTip = info.usaToolTip ||  false;
-	this.data.usaMinuscula = info.usaMinuscula || false;
-	this.nodo = null;
+class CampoDeTexto {
+	constructor(info){
+		this.data = info;
+		this.estado = 'porConstriur';
+		this.data.eslabon = info.eslabon || 'simple';
+		this.data.usaToolTip = info.usaToolTip ||  false;
+		this.data.usaMinuscula = info.usaMinuscula || false;
+		this.nodo = null;
 
-	this.construir = function(){
+		this.construir();
+	}
+
+	construir(){
 		var CampoDeTexto = document.createElement('div');
 		CampoDeTexto.classList.toggle('group');
 		CampoDeTexto.setAttribute(this.data.eslabon,'');
@@ -37,7 +41,7 @@ var CampoDeTexto = function(info){
 			this.data.valor = null;
 		}
 	};
-	this.captarValor = function(){
+	captarValor(){
 		var tipo = this.captarTipo();
 		var valor;
 		if(this.nodo.querySelector(tipo).value===''){
@@ -50,11 +54,11 @@ var CampoDeTexto = function(info){
 		}
 		return valor;
 	};
-	this.captarNombre = function(){
+	captarNombre(){
 		var tipo = this.captarTipo();
 		return this.nodo.querySelector(tipo).name;
 	};
-	this.captarTipo = function(){
+	captarTipo(){
 		var tipo;
 		if(this.data.tipo==='area'){
 			tipo = 'textarea';
@@ -63,24 +67,23 @@ var CampoDeTexto = function(info){
 		}
 		return tipo;
 	};
-	this.captarRequerido = function(){
+	captarRequerido(){
 		return this.data.requerido;
 	};
-	this.asignarValor = function(valor) {
+	asignarValor(valor) {
 		var tipo = this.captarTipo();
 		this.nodo.querySelector(tipo).value = valor;
 	};
-	this.habilitar = function(){
+	habilitar(){
 		this.nodo.classList.remove('deshabilitado');
 		this.nodo.querySelector(this.captarTipo()).disabled = false;
 		this.nodo.querySelector(this.captarTipo()).focus();
 	};
-	this.deshabilitar = function(){
+	deshabilitar(){
 		this.nodo.classList.add('deshabilitado');
 		this.nodo.querySelector(this.captarTipo()).disabled = true;
 	};
-	this.limpiar = function(){
+	limpiar(){
 		this.asignarValor("");
 	};
-	this.construir();
 };

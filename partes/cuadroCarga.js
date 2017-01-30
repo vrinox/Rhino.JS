@@ -1,22 +1,25 @@
-var CuadroCarga = function(info,callback){
+class CuadroCarga {
+	constructor(info,callback){
 
-	//manejo de interfaz
-	this.contenedor=info.contenedor;
-	this.tipo=info.tipo || 'carga';
-	this.clases=info.clases || [];
-	this.nodo = null;
-	this.nombre = info.nombre || 'unico';
-	info.mensaje = info.mensaje || ' ';
+		//manejo de interfaz
+		this.contenedor=info.contenedor;
+		this.tipo=info.tipo || 'carga';
+		this.clases=info.clases || [];
+		this.nodo = null;
+		this.nombre = info.nombre || 'unico';
+		info.mensaje = info.mensaje || ' ';
 
-	//maenjo de carga
-	this.intervalID = null;
-	this.contEspera = 0;
-	this.callback = callback || null;
+		//maenjo de carga
+		this.intervalID = null;
+		this.contEspera = 0;
+		this.callback = callback || null;
 
-	this.estado = 'sinIniciar';
+		this.estado = 'sinIniciar';
 
-	this.construirNodo = function(){
+		this.construirNodo();
+	}
 
+	construirNodo(){
 		var cuadro = document.createElement('div');
 		cuadro.classList.toggle('ContenedorCarga');
 
@@ -44,7 +47,7 @@ var CuadroCarga = function(info,callback){
 		UI.manejoDeClases(this);
 		this.tamanoTexto(info.mensaje);
 	};
-	this.tamanoTexto = function(texto){
+	tamanoTexto(texto){
 			var tamano = texto.length;
 			if(tamano < 40){
 				var width = tamano * 12;
@@ -57,7 +60,7 @@ var CuadroCarga = function(info,callback){
 			}
 	};
 	//esta funcion crea un intervalo de carga que permite manejar dicha carga colocandole un tiempo de espera 5 segundos
-	this.manejarCarga = function(nombre){
+	manejarCarga(nombre){
 		UI.buscarCuadroCarga(nombre).contEspera=0;
 		this.intervalID=setInterval(function(){
 			var callback = UI.buscarCuadroCarga(nombre).callback;
@@ -89,7 +92,7 @@ var CuadroCarga = function(info,callback){
 	};
 	//funcion en la cual se le pasa parametros al callback al culminar la carga
 	// y muestra un mensaje al culminar la carga
-	this.culminarCarga = function(respuesta,callback){
+	culminarCarga(respuesta,callback){
 		callback = callback || null;
 		this.estado = 'cargaCulminada';
 		var titulo = this.nodo.firstChild;
@@ -102,12 +105,11 @@ var CuadroCarga = function(info,callback){
 		}
 	};
 	//esta funcion mata el intervalo al ejecultarce el callback de dicha carga
-	this.terminarCarga = function(){
+	terminarCarga(){
 		var cuadro = this;
 		clearInterval(this.intervalID);
 		this.estado = 'cargaCulminada';
 		cuadro.nodo.parentNode.removeChild(cuadro.nodo);
 		UI.removerCuadroCarga(cuadro.nombre);
 	};
-	this.construirNodo();
 };

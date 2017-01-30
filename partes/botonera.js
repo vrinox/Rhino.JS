@@ -1,104 +1,104 @@
-var Botonera = function(atributos){
-
-	var Boton = function(atributos){
+class Boton { 
+	constructor(atributos){
 		this.atributos = atributos;
 		this.tipo = atributos.tipo.toLowerCase();
 		this.nodo =  null;
 		this.estado = 'porConstruir';
 		this.clases= atributos.clases || [];
-
-
-		this.construirNodo = function(){
-			var nodo = document.createElement('button');
-			nodo.setAttribute('type','button');
-			switch(this.atributos.tipo){
-				case 'abrir':
-					nodo.setAttribute('btnAbrir','');
-					nodo.setAttribute('estado','oculto');
-				break;
-				case 'nuevo':
-					nodo.setAttribute('btnNuevo','');
-					nodo.textContent = "insert_drive_file";
-					nodo.classList.add('mat-lightblue500');
-				break;
-				case 'buscar':
-					nodo.setAttribute('btnBuscar','');
-					nodo.textContent = "search";
-					nodo.classList.add('mat-blue500');
-				break;
-				case 'modificar':
-					nodo.setAttribute('btnModificar','');
-					nodo.textContent = "mode_edit";
-					nodo.classList.add('mat-green500');
-				break;
-				case 'eliminar':
-					nodo.setAttribute('btnEliminar','');
-					nodo.textContent = "delete";
-					nodo.classList.add('mat-red500');
-				break;
-				case 'detalle':
-					nodo.setAttribute('btnDetalle','');
-					nodo.textContent = "list";
-					nodo.classList.add('mat-deeporange500');
-				break;
-				case 'asignar-rol':
-					nodo.setAttribute('btnAsignarRol','');
-				break;
-				case 'seguridad':
-					nodo.setAttribute('btnSeguridad','');
-					nodo.textContent = "security";
-					nodo.classList.add('mat-bluegrey500');
-				break;
-				case 'cancelar':
-					nodo.setAttribute('btnCancelar','');
-					nodo.textContent = "clear";
-					nodo.classList.add('mat-red500');
-				break;
-				case 'guardar':
-					nodo.setAttribute('btnGuardar','');
-					nodo.textContent = "save";
-					nodo.classList.add('mat-indigo500');
-				break;
-				case 'aceptar':
-					nodo.setAttribute('btnAceptar','');
-					nodo.textContent = "check";
-					nodo.classList.add('mat-green500');
-				break;
-				case 'validado':
-					nodo.setAttribute('btnValidado','');
-					nodo.textContent = "thumb_up";
-					nodo.classList.add('mat-indigo500');
-				break;
-				case 'apertura':
-					nodo.setAttribute('btnApertura','');
-					nodo.textContent = "launch";
-					nodo.classList.add('mat-lightgreen500');
-				break;
-			}
-			this.nodo = nodo;
-			this.estado = 'enUso';
-			var yo = this;
-			UI.manejoDeClases(this);
-			if(this.atributos.click){
-				this.nodo.onclick = function(){
-					yo.atributos.click(yo);
-				};
-			}
-			if(atributos.contenido){
-				this.nodo.textContent = atributos.contenido;
-			}
-
-		};
 		this.construirNodo();
+	}
+
+	construirNodo(){
+		var nodo = document.createElement('button');
+		nodo.setAttribute('type','button');
+		switch(this.atributos.tipo){
+			case 'abrir':
+				nodo.setAttribute('btnAbrir','');
+				nodo.setAttribute('estado','oculto');
+			break;
+			case 'nuevo':
+				nodo.setAttribute('btnNuevo','');
+				nodo.textContent = "insert_drive_file";
+				nodo.classList.add('mat-lightblue500');
+			break;
+			case 'buscar':
+				nodo.setAttribute('btnBuscar','');
+				nodo.textContent = "search";
+				nodo.classList.add('mat-blue500');
+			break;
+			case 'modificar':
+				nodo.setAttribute('btnModificar','');
+				nodo.textContent = "mode_edit";
+				nodo.classList.add('mat-green500');
+			break;
+			case 'eliminar':
+				nodo.setAttribute('btnEliminar','');
+				nodo.textContent = "delete";
+				nodo.classList.add('mat-red500');
+			break;
+			case 'detalle':
+				nodo.setAttribute('btnDetalle','');
+				nodo.textContent = "list";
+				nodo.classList.add('mat-deeporange500');
+			break;
+			case 'asignar-rol':
+				nodo.setAttribute('btnAsignarRol','');
+			break;
+			case 'seguridad':
+				nodo.setAttribute('btnSeguridad','');
+				nodo.textContent = "security";
+				nodo.classList.add('mat-bluegrey500');
+			break;
+			case 'cancelar':
+				nodo.setAttribute('btnCancelar','');
+				nodo.textContent = "clear";
+				nodo.classList.add('mat-red500');
+			break;
+			case 'guardar':
+				nodo.setAttribute('btnGuardar','');
+				nodo.textContent = "save";
+				nodo.classList.add('mat-indigo500');
+			break;
+			case 'aceptar':
+				nodo.setAttribute('btnAceptar','');
+				nodo.textContent = "check";
+				nodo.classList.add('mat-green500');
+			break;
+			case 'validado':
+				nodo.setAttribute('btnValidado','');
+				nodo.textContent = "thumb_up";
+				nodo.classList.add('mat-indigo500');
+			break;
+			case 'apertura':
+				nodo.setAttribute('btnApertura','');
+				nodo.textContent = "launch";
+				nodo.classList.add('mat-lightgreen500');
+			break;
+		}
+		this.nodo = nodo;
+		this.estado = 'enUso';
+		var yo = this;
+		UI.manejoDeClases(this);
+		if(this.atributos.click){
+			this.nodo.onclick = function(){
+				yo.atributos.click(yo);
+			};
+		}
+		if(atributos.contenido){
+			this.nodo.textContent = atributos.contenido;
+		}
 	};
-	//-------------------------------------------- fin objeto boton ----------------------
-	this.estructura = atributos.botones;
-	this.estado = 'porConstruir';
-	this.nodo = null;
-
-	this.botones = [];
-
-	this.construir = function(){
+};
+class Botonera {
+	constructor(atributos){
+		this.estructura = atributos.botones;
+		this.estado = 'porConstruir';
+		this.nodo = null;
+		this.botones = [];
+		construir();
+	
+	}
+	construir(){
 		var contenedor = atributos.contenedor;
 		var nodo = document.createElement('div');
 		nodo.setAttribute('botonera','');
@@ -123,14 +123,14 @@ var Botonera = function(atributos){
 			}
 		}
 	};
-	this.inicializarBotones = function(){
+	inicializarBotones = function(){
 		var botones = this.estructura;
 		for(var x = 0; x < botones.length; x++){
 			this.agregarBoton(botones[x]);
 		}
 		this.agregarEfectos();
 	};
-	this.agregarBoton = function(consBoton){
+	agregarBoton(consBoton){
 		var botonera = this.nodo;
 		var existe = false;
 		if(typeof consBoton == 'string'){
@@ -159,7 +159,7 @@ var Botonera = function(atributos){
 		}
 		return boton;
 	};
-	this.agregarBotones = function(botones){
+	agregarBotones(botones){
 		var tiempo = 20;
 		for(var x = 0; x < botones.length; x++){
 			espera(x,tiempo,botones,'agregar');
@@ -175,14 +175,14 @@ var Botonera = function(atributos){
 			}
 		},tiempo);
 	}
-	this.quitarBotones = function(botones){
+	quitarBotones(botones){
 		var tiempo = 20;
 		for(var x = 0; x < botones.length; x++){
 			espera(x,tiempo,botones,'quitar');
 			tiempo+=20;
 		}
 	};
-	this.gestionarBotones = function(botones){
+	gestionarBotones(botones){
 		var tiempo = 20;
 		if(botones.quitar[0] === 'todos'){
 			botones.quitar = this.botones;
@@ -196,7 +196,7 @@ var Botonera = function(atributos){
 			tiempo+=20;
 		}
 	};
-	this.agregarEfectos = function(){
+	agregarEfectos(){
 		var botones = this.botones;
 		if(botones.length>1){
 			if(!this.buscarBoton('abrir')){
@@ -226,7 +226,7 @@ var Botonera = function(atributos){
 			}
 		}
 	};
-	this.buscarBoton = function(tipo){
+	buscarBoton(tipo){
 		var botones = this.botones;
 		for(var x = 0; x < botones.length; x++){
 			if(botones[x].tipo==tipo){
@@ -235,7 +235,7 @@ var Botonera = function(atributos){
 		}
 		return false;
 	};
-	this.listarBotones = function(){
+	listarBotones(){
 		var lista = this.botones;
 		var resultado = 'estos son los botones agregados:\n';
 		for( var x = 0; x < lista.length; x++){
@@ -243,10 +243,10 @@ var Botonera = function(atributos){
 		}
 		console.log(resultado);
 	};
-	this.getEstado = function(){
+	getEstado(){
 		console.log(this.estado);
 	};
-	this.quitarBoton = function(consBoton){
+	quitarBoton(consBoton){
 		if(typeof consBoton == 'string'){
 			consBoton = {tipo:consBoton};
 		}
@@ -261,5 +261,5 @@ var Botonera = function(atributos){
 			}
 		}
 	};
-	this.construir();
+
 };

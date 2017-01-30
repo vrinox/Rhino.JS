@@ -1,12 +1,14 @@
-//-----------------------------Objeto Radio----------------------------
-var Radio = function(info){
-	//nombre,opciones,seleccionado
-	this.data = info;
-	this.estado = 'porConstriur';
-	this.nodo = null;
-	this.opciones = [];
+class Radio {
+	constructor(info){
+		//nombre,opciones,seleccionado
+		this.data = info;
+		this.estado = 'porConstriur';
+		this.nodo = null;
+		this.opciones = [];
 
-	this.construirNodo = function(){
+		this.construirNodo();
+	}
+	construirNodo(){
 		var nodo = document.createElement('div');
 		nodo.setAttribute('formElements','radio');
 		if(this.data.eslabon === 'area'){
@@ -18,7 +20,7 @@ var Radio = function(info){
 			this.asignarValor(this.data.valor);
 		}
 	};
-	this.agregarOpcion = function(opcion){
+	agregarOpcion(opcion){
 		var nodoOpcion = document.createElement('label');
 		nodoOpcion.classList.toggle('radio');
 		var html = '';
@@ -27,13 +29,13 @@ var Radio = function(info){
 		this.opciones.push(nodoOpcion);
 		this.nodo.appendChild(nodoOpcion);
 	};
-	this.agregarOpciones = function(){
+	agregarOpciones(){
 		for(var x=0; x<this.data.opciones.length;x++){
 			this.agregarOpcion(this.data.opciones[x]);
 		}
 	};
 
-	this.captarValor = function(){
+	captarValor(){
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		for (var i = 0; i < opciones.length; i++) {
 			if(opciones[i].checked){
@@ -42,13 +44,13 @@ var Radio = function(info){
 		}
 		return null;
 	};
-	this.captarNombre = function(){
+	captarNombre(){
 		return this.nodo.querySelector('input[type="radio"]').name;
 	};
-	this.captarRequerido = function(){
+	captarRequerido(){
 		return this.data.requerido;
 	};
-	this.asignarValor = function(valor){
+	asignarValor(valor){
 		this.valor = valor;
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(opc){
@@ -59,25 +61,24 @@ var Radio = function(info){
 			}
 		});
 	};
-	this.deshabilitar = function(){
+	deshabilitar(){
 		this.nodo.classList.add('desahbilitado');
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.disabled = true;
 		});
 	};
-	this.habilitar = function(){
+	habilitar(){
 		this.nodo.classList.remove('desahbilitado');
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.disabled = false;
 		});
 	};
-	this.limpiar = function(){
+	limpiar(){
 		var opciones = this.nodo.querySelectorAll('input[type="radio"]');
 		opciones.forEach(function(each){
 			each.checked = false;
 		});
 	};
-	this.construirNodo();
 };
